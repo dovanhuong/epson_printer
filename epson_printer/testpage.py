@@ -3,7 +3,7 @@ Creator: Tony DO
 Copyright: dvhbkhn@gmail.com
 Date: 23.04.23
 """
-from .epsonprinter import EpsonPrinter
+from epsonprinter import EpsonPrinter
 from optparse import OptionParser
 import sys, os, time
 from PIL import Image, ImageFont
