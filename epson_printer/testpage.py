@@ -58,7 +58,7 @@ def image_edit(text1, text2, text3,png):
     #l1.text((120,180), text2,font=font, fill=0, stroke_width=4 )
     l1.text((138,300), text3, fill = 0)
     angle = 270
-    #img = img.rotate(angle, expand=True)
+    img = img.rotate(angle, expand=True)
     img.show()
     img.save("tmp.png")
     return 0
@@ -73,23 +73,25 @@ if __name__ == '__main__':
 
 
 
-    # parser = OptionParser()
-    # parser.add_option("-v", "--idvendor", action="store", type="int",default="0x04b8", dest="id_vendor", help="The printer vendor id")
-    # parser.add_option("-p", "--idProduct", action="store", type="int",default="0x0e27", dest="id_product", help="The printer product id")
-    # options, args = parser.parse_args()
-    # if not options.id_vendor or not options.id_product:
-    #     parser.print_help()
-    # else:
-    #     printer = EpsonPrinter(options.id_vendor, options.id_product)
-    #     """Text printing"""
-    #     text1 = "This is address for center"
-    #     text2 = "10000"
-    #     text3 = "24:24:30"
-    #     png = "1.png"
-    #     test = image_edit(text1, text2, text3, png=png)
-    #     os.system("sudo lp -o landscape tmp.png")
-    #     time.sleep(13)
-    #     printer.print_text("    =====>>> Have a nice day!    <<<=====\n\n\n")
-    #     printer.linefeed()
-    #     printer.cut()
-    #     sys.exit(1)
+    parser = OptionParser()
+    parser.add_option("-v", "--idvendor", action="store", type="int",default="0x04b8", dest="id_vendor", help="The printer vendor id")
+    parser.add_option("-p", "--idProduct", action="store", type="int",default="0x0e27", dest="id_product", help="The printer product id")
+    options, args = parser.parse_args()
+    if not options.id_vendor or not options.id_product:
+        parser.print_help()
+    else:
+        printer = EpsonPrinter(options.id_vendor, options.id_product)
+        """Text printing"""
+        #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
+        text1 = u"Đây là tên dịch vụ cần in theo khách hàng"
+        text2 = "123456"
+        text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
+        png = "../format_pic.png"
+        test = image_edit(text1, text2, text3, png=png)
+        test = image_edit(text1, text2, text3, png=png)
+        os.system("sudo lp -o landscape tmp.png")
+        time.sleep(13)
+        printer.print_text("    =====>>> Have a nice day!    <<<=====\n\n\n")
+        printer.linefeed()
+        printer.cut()
+        sys.exit(1)
