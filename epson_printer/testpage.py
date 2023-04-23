@@ -77,14 +77,14 @@ def text_image(text1, text2, text3,png):
     current_h, pad = 120, 10
     for line in para:
         w, h = l1.textsize(line, font=font1)
-        l1.text(((w_size - w)/2,current_h), line, font=font1)
+        l1.text(((w_size - w)/2,current_h), line, font=font1, fill=(0,0,0,0))
         current_h += h + pad
     
     para = textwrap.wrap(text2, width=50)
     current_h, pad = 170, 10
     for line in para:
         w, h = l1.textsize(line, font=font)
-        l1.text(((w_size - w)/2,current_h), line, font=font, stroke_width=4)
+        l1.text(((w_size - w)/2,current_h), line, font=font, stroke_width=4, fill=(0,0,0,0))
         current_h += h + pad
     print("see time: ",time.time())
 
