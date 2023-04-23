@@ -37,6 +37,14 @@ def gpio_button_ctrl(pin1, pin2):
     GPIO.setup(pin1, GPIO.IN)
     GPIO.setup(pin2, GPIO.IN)
     print("I'm working with GPIO signal, please following\n")
+    # check switch status:
+    while True:
+        print("status pin ",pin1, " ",  GPIO.input(pin1))
+        print("status pin ", pin2, " ", GPIO.input(pin2))
+        time.sleep(2)
+
+    
+
 
     if pin1:
         print("I will work after this pin activated")
@@ -133,8 +141,8 @@ if __name__ == '__main__':
         parser.print_help()
     else:
         #GPIO
-        pin1 = 10
-        pin2 =11
+        pin1 = 13
+        pin2 = 15
         gpio_button_ctrl(pin1, pin2)
         # end of GPIO
         printer = EpsonPrinter(options.id_vendor, options.id_product)
