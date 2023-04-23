@@ -103,7 +103,7 @@ def text_image(logo, text1, text2, text3,png):
     current_h, pad = 170, 10
     for line in para:
         w, h = l1.textsize(line, font=font2)
-        l1.text(((w_size - w)/2,current_h), line, font=font2, stroke_width=3, fill=(0,0,0,0))
+        l1.text(((w_size - w)/2,current_h), line, font=font2, stroke_width=1, fill=(0,0,0,0))
         current_h += h + pad
     print("see time: ",time.time())
 
