@@ -13,6 +13,8 @@ from time import ctime
 import requests
 import RPi.GPIO as GPIO
 import usb.core
+import thread
+
 
 
 
@@ -130,14 +132,10 @@ def text_image(logo, text1, text2, text3,png):
     img.show()
     img.save("tmp.png")
     return 0
-if __name__ == '__main__':
-    #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
-    # text1 = u"Đây là tên dịch vụ cần in theo khách hàng"
-    # text2 = "123456"
-    # text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
-    # png = "../format_pic.png"
-    # test = image_edit(text1, text2, text3, png=png)
 
+
+
+if __name__ == '__main__':
 
 
     parser = OptionParser()
@@ -173,6 +171,7 @@ if __name__ == '__main__':
 
             #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
             while (pin1_status == 1 or pin2_status==1):
+                
                 # check driver is ready or not                
                 GPIO.cleanup()
                 pin1_status = 0
@@ -191,6 +190,9 @@ if __name__ == '__main__':
                 # test = image_edit(text1, text2, text3, png=png)
                 # test = image_edit(text1, text2, text3, png=png)
                 os.system("sudo lp -o landscape tmp.png && sudo python cut.py ")
+                url = "https://jsonplaceholder.typicode.com/posts/"
+                data = {"text1": text1, "text2": text2, "text3": text3}
+                thread1 = thread.start_new_thread(making_POST_request, (url, data))
                 time.sleep(1)
                 pin1_status = 0
                 pin2_status =0

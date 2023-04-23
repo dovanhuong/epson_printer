@@ -13,6 +13,8 @@ from time import ctime
 import requests
 import RPi.GPIO as GPIO
 import usb.core
+import thread
+
 
 
 
@@ -130,14 +132,10 @@ def text_image(logo, text1, text2, text3,png):
     img.show()
     img.save("tmp.png")
     return 0
-if __name__ == '__main__':
-    #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
-    # text1 = u"Đây là tên dịch vụ cần in theo khách hàng"
-    # text2 = "123456"
-    # text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
-    # png = "../format_pic.png"
-    # test = image_edit(text1, text2, text3, png=png)
 
+
+
+if __name__ == '__main__':
 
 
     parser = OptionParser()
@@ -172,21 +170,15 @@ if __name__ == '__main__':
             #     print("Please until my Printer ready!!!")
 
             #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
-            for i in range(4):
-                # check driver is ready or not
-                print("checking driver")
-                dev = usb.core.find(idVendor= options.id_vendor, idProduct=options.id_product)
-                # if dev.is_kernel_driver_active(0):
-                reattach = True
-                dev.detach_kernel_driver(0)
-                # end of check driver ready or not
+            for  i in range(10):
+                
+                # check driver is ready or not                
                 GPIO.cleanup()
                 pin1_status = 0
                 pin2_status = 0
                 print("You pressed the button\n")
                 #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
-                # end of GPIO
-                printer = EpsonPrinter(options.id_vendor, options.id_product)
+                
                 """Text printing"""
                 #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
                 logo_img = "../logo.bmp"
@@ -197,19 +189,11 @@ if __name__ == '__main__':
                 test = text_image(logo_img, text1, str(text2), text3, png=png)
                 # test = image_edit(text1, text2, text3, png=png)
                 # test = image_edit(text1, text2, text3, png=png)
-                os.system("sudo lp -o landscape tmp.png")
-                time.sleep(1)
-                printer.cut()
-                """
-                printer.print_text("    =====>>> Have a nice day!    <<<=====\n\n\n")
-                printer.linefeed()
-                printer.cut()
-                # post data in web service
+                os.system("sudo lp -o landscape tmp.png && sudo python cut.py ")
                 url = "https://jsonplaceholder.typicode.com/posts/"
-                data = {"text1":text1,"text2": text2, "time":text3}
-                making_POST_request(url, data)
-                print("Complted post data in web service \n\n")
-                """
+                data = {"text1": text1, "text2": text2, "text3": text3}
+                thread1 = thread.start_new_thread(making_POST_request, (url, data))
+                time.sleep(1)
                 pin1_status = 0
                 pin2_status =0
                 # else:
