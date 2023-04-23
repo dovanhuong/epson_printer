@@ -21,7 +21,8 @@ def making_POST_request(url, data):
 
     # print the response
     post_response_json = post_response.json()
-    print(post_response_json)
+    print("reply from post response: ", post_response_json)
+    print("post response status: ", post_response.status_code)
     return 0
 
 def gpio_button_ctrl(pin1, pin2):
