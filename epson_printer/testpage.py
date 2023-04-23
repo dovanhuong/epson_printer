@@ -42,7 +42,10 @@ def gpio_button_ctrl(pin1, pin2):
     #     print("status pin ",pin1, " ",  GPIO.input(pin1))
     #     print("status pin ", pin2, " ", GPIO.input(pin2))
     #     time.sleep(2)
-    return GPIO.input(pin1), GPIO.input(pin2)
+    print("status pin ",pin1, " ",  GPIO.input(pin1))
+    print("status pin ", pin2, " ", GPIO.input(pin2))
+
+    return int(GPIO.input(pin1)), int(GPIO.input(pin2))
 
     
 
@@ -148,7 +151,7 @@ if __name__ == '__main__':
         pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
         text2 = 100
         while True:
-            while (pin1_status == 1 or pin2_status==2):
+            while (pin1_status == 1 or pin2_status==1):
                 print("You pressed the button\n")
                 # end of GPIO
                 printer = EpsonPrinter(options.id_vendor, options.id_product)
