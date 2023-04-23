@@ -12,6 +12,8 @@ import textwrap
 from time import ctime
 import requests
 import RPi.GPIO as GPIO
+import usb.core
+
 
 
 led = 18
@@ -105,14 +107,14 @@ def text_image(logo, text1, text2, text3,png):
     img.paste(img_logo,(0,0))
 
     l1 = ImageDraw.Draw(img)
-    para = textwrap.wrap(text1, width=50)
+    para = textwrap.wrap(str(text1), width=50)
     current_h, pad = 120, 10
     for line in para:
         w, h = l1.textsize(line, font=font1)
         l1.text(((w_size - w)/2,current_h), line, font=font1, fill=(0,0,0,0))
         current_h += h + pad
     
-    para = textwrap.wrap(text2, width=50)
+    para = textwrap.wrap(str(text2), width=50)
     current_h, pad = 170, 10
     for line in para:
         w, h = l1.textsize(line, font=font2)
@@ -122,7 +124,7 @@ def text_image(logo, text1, text2, text3,png):
 
     #l1.text((50,120), text1, fill=0)
     #l1.text((120,180), text2,font=font, fill=0, stroke_width=4 )
-    l1.text((138,300), text3, fill = 0,font=font3)
+    l1.text((138,300), str(text3), fill = 0,font=font3)
     angle = 270
     img = img.rotate(angle, expand=True)
     img.show()
@@ -160,9 +162,29 @@ if __name__ == '__main__':
             print("status pin ", pin2, " ", GPIO.input(pin2))
             pin1_status = GPIO.input(pin1)
             pin2_status = GPIO.input(pin2)
+            # check driver is ready or not
+            print("checking driver")
+            dev = usb.core.find(idVendor= options.id_vendor, idProduct=options.id_product)
+            if dev.is_kernel_driver_active(0):
+                reattach = True
+                dev.detach_kernel_driver(0)
+            else:
+                print("Please until my Printer ready!!!")
 
             #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
             if (pin1_status == 1 or pin2_status==1):
+                # check driver is ready or not
+                print("checking driver")
+                dev = usb.core.find(idVendor= options.id_vendor, idProduct=options.id_product)
+                if dev.is_kernel_driver_active(0):
+                    reattach = True
+                    dev.detach_kernel_driver(0)
+                else:
+                    print("Please until my Printer ready!!!")
+
+
+                # end of check driver ready or not
+
                 GPIO.cleanup()
                 pin1_status = 0
                 pin2_status = 0
@@ -177,7 +199,7 @@ if __name__ == '__main__':
                 text2 = text2 + 1
                 text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
                 png = "../format_pic.png"
-                test = text_image(logo_img, text1, text2, text3, png=png)
+                test = text_image(logo_img, text1, str(text2), text3, png=png)
                 # test = image_edit(text1, text2, text3, png=png)
                 # test = image_edit(text1, text2, text3, png=png)
                 os.system("sudo lp -o landscape tmp.png")
