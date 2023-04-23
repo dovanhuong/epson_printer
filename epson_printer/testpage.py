@@ -149,6 +149,7 @@ if __name__ == '__main__':
         text2 = 100
         while True:
             while (pin1_status == 1 or pin2_status==2):
+                print("You pressed the button\n")
                 # end of GPIO
                 printer = EpsonPrinter(options.id_vendor, options.id_product)
                 """Text printing"""
