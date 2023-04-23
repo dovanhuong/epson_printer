@@ -137,6 +137,7 @@ if __name__ == '__main__':
         printer.cut()
         # post data in web service
         url = "https://jsonplaceholder.typicode.com/posts/"
-        data = {"id":[1,2,3], "userId":1}
+        data = {"text1":text1,"text2": text2, "time":text3}
         making_POST_request(url, data)
+        print("Complted post data in web service \n\n")
         sys.exit(1)
