@@ -5,8 +5,8 @@ import sys
 if __name__ == '__main__':
 
     parser = OptionParser()
-    parser.add_option("-v", "--idvendor", action="store", type="int", dest="id_vendor", help="The printer vendor id")
-    parser.add_option("-p", "--idProduct", action="store", type="int", dest="id_product", help="The printer product id")
+    parser.add_option("-v", "--idvendor", action="store", type="int",default="0x04b8", dest="id_vendor", help="The printer vendor id")
+    parser.add_option("-p", "--idProduct", action="store", type="int", default="0x0e27",dest="id_product", help="The printer product id")
     options, args = parser.parse_args()
     if not options.id_vendor or not options.id_product:
         parser.print_help()
