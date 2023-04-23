@@ -13,11 +13,23 @@ from time import ctime
 import requests
 import RPi.GPIO as GPIO
 import usb.core
-import _thread
+import _thread, argparse
 
 # Phần cài đặt kết nối ngoại vi
 GPIO.setmode(GPIO.BOARD)
 # kết thúc phần cài đặt kết nối ngoại vi
+# Hàm input ID và Vendor của máy in
+def parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-id_vendor', action='store', dest='id_vendor',
+                        help='Store ID of vendor check by: $lsusb')
+    parser.add_argument('-id_product', action='store', dest='id_product',
+                        help='Store ID product check by: $lsusb')
+    parser_value = parser.parse_args()
+    id_vendor = parser_value.id_vendor
+    id_product = parser_value.id_product
+   
+    return id_vendor, id_product
 
 """
  Hàm đẩy dữ liệu JSON lên web service
@@ -65,7 +77,6 @@ def gpio_button_ctrl(pin1, pin2):
         - ảnh output định dạng *png 
 """
 def text_image(logo, text1, text2, text3):
-
     logo = Image.open(logo)
     img_logo = logo.resize((350,86))
     font1 = ImageFont.truetype("../font/arial-unicode-ms.ttf",17)
@@ -90,7 +101,6 @@ def text_image(logo, text1, text2, text3):
         l1.text(((w_size - w)/2,current_h), line, font=font2, stroke_width=1, fill=(0,0,0,0))
         current_h += h + pad
     #print("see time: ",time.time())
-
     #l1.text((50,120), text1, fill=0)
     #l1.text((120,180), text2,font=font, fill=0, stroke_width=4 )
     l1.text((138,300), str(text3), fill = 0,font=font3)
@@ -100,44 +110,40 @@ def text_image(logo, text1, text2, text3):
     img.save("tmp.png")
     return 0
 
-
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-v", "--idvendor", action="store", type="int",default="0x04b8", dest="id_vendor", help="The printer vendor id")
-    parser.add_option("-p", "--idProduct", action="store", type="int",default="0x0e27", dest="id_product", help="The printer product id")
-    options, args = parser.parse_args()
-    if not options.id_vendor or not options.id_product:
-        parser.print_help()
-    else:
-        #GPIO nhập địa chỉ chân PIN GPIO
-        pin1 = 13
-        pin2 = 15
-        text2 = 100 # giá trị khởi tạo counter
-        while True:
-            # Kiểm tra trạng thái nút bấm
-            pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
+    id_vendor, id_product = parser()
+    
+    #GPIO nhập địa chỉ chân PIN GPIO
+    pin1 = 13
+    pin2 = 15
+    text2 = 100 # giá trị khởi tạo counter
+    while True:
+        # Kiểm tra trạng thái nút bấm
+        pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
 
-            while(pin1_status==1 or pin2_status==1):
-                pin1_status = 0
-                pin2_status = 0
-                print("You pressed the button\n")
-
-                """Text printing"""
-                logo_img = "../logo.bmp" # đường dẫn logo image
-                text1 = u"Đây là tên dịch vụ cần in theo khách hàng" # tên text 
-                text2 = text2 + 1 # số thứ tự
-                text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
-                test = text_image(logo_img, text1, str(text2), text3)
-                os.system("sudo lp -o landscape tmp.png && sudo python cut.py ") # chạy chương trình in máy EPSON
-                time.sleep(2) # thời gian delay = 2seconds
-                # Threading cho việc pust data lên web service
-                #url = "https://jsonplaceholder.typicode.com/posts/"
-                url = "https://datcom.click/api.lay-so-thu-tu"
-                data = {"id_donvi":"1", "id_dichvu":"1", "phone": "095551234", "name":"Trần Đình Hợp"}
-                #data = {"text1": text1, "text2": text2, "text3": text3}
-                thread1 = _thread.start_new_thread(making_POST_request, (url, data))
-                # kết thúc chạy thread cho đẩy dữ liệu lên web service
-                pin1_status = 0
-                pin2_status =0
-                # hoàn thành việc in và chờ người dùng ấn nút tiếp theo
-        sys.exit(1)
+        # while(pin1_status==1 or pin2_status==1):
+        for i in range(4):
+            pin1_status = 0
+            pin2_status = 0
+            print("You pressed the button\n")
+            """Text printing"""
+            logo_img = "../logo.bmp" # đường dẫn logo image
+            text1 = u"Phần in tên dịch vụ cần in theo khách hàng" # tên text 
+            text2 = text2 + 1 # số thứ tự
+            text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
+            test = text_image(logo_img, text1, str(text2), text3)
+            cmd = "sudo lp -o landscape tmp.png && sudo python cut.py -id_vendor " + str(id_vendor) + " -id_product " + str(id_product)
+            os.system(str(cmd))
+            #os.system("sudo lp -o landscape tmp.png && sudo python cut.py ") # chạy chương trình in máy EPSON
+            time.sleep(2) # thời gian delay = 2seconds
+            # Threading cho việc pust data lên web service
+            #url = "https://jsonplaceholder.typicode.com/posts/"
+            url = "https://datcom.click/api.lay-so-thu-tu"
+            data = {"id_donvi":"1", "id_dichvu":"1", "phone": "095551234", "name":"Trần Đình Hợp"}
+            #data = {"text1": text1, "text2": text2, "text3": text3}
+            thread1 = _thread.start_new_thread(making_POST_request, (url, data))
+            # kết thúc chạy thread cho đẩy dữ liệu lên web service
+            pin1_status = 0
+            pin2_status =0
+            # hoàn thành việc in và chờ người dùng ấn nút tiếp theo
+    sys.exit(1)
