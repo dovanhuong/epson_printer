@@ -71,7 +71,7 @@ def text_image(text1, text2, text3,png):
     w_size,h_size  = img.size
     #print(w, " ", h)
     w_size, h_size = 350, 400
-    img = Image.new('RGB', (w_size, h_size), (0,0,0,0))
+    img = Image.new('RGB', (w_size, h_size), (255,255,255))
     l1 = ImageDraw.Draw(img)
     para = textwrap.wrap(text1, width=50)
     current_h, pad = 120, 10
