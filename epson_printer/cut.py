@@ -14,7 +14,6 @@ def parser():
     return id_vendor, id_product
 if __name__=="__main__":
     id_vendor, id_product = parser()
-    p = Usb(str(id_vendor), str(id_product),0)
-    #p = Usb(0x04b8, 0x0e27,0)
+    #p = Usb(str(id_vendor), str(id_product),0)
+    p = Usb(0x04b8, 0x0e27,0)  # input your value of id_vendor and id_product by $lsusb
     p.cut()
-    

@@ -3,8 +3,8 @@ Creator: Tony DO
 Copyright: dvhbkhn@gmail.com
 Date: 23.04.23
 """
-from epsonprinter import EpsonPrinter
-from optparse import OptionParser
+#from epsonprinter import EpsonPrinter
+#from optparse import OptionParser
 import sys, os, time, datetime
 from PIL import Image, ImageFont
 from PIL import ImageDraw
@@ -12,7 +12,7 @@ import textwrap
 from time import ctime
 import requests
 import RPi.GPIO as GPIO
-import usb.core
+#import usb.core
 import _thread, argparse
 
 # Phần cài đặt kết nối ngoại vi
@@ -79,9 +79,9 @@ def gpio_button_ctrl(pin1, pin2):
 def text_image(logo, text1, text2, text3):
     logo = Image.open(logo)
     img_logo = logo.resize((350,86))
-    font1 = ImageFont.truetype("../font/arial-unicode-ms.ttf",17)
-    font2 = ImageFont.truetype("../font/arial.ttf",70)
-    font3 = ImageFont.truetype("../font/arial.ttf",15)
+    font1 = ImageFont.truetype("./font/arial-unicode-ms.ttf",17) # input your absolute path => for auto running when boot up
+    font2 = ImageFont.truetype("./font/arial.ttf",70) # input your absolute path => for auto running when boot up
+    font3 = ImageFont.truetype("./font/arial.ttf",15) # input your absolute path => for auto running when boot up
     w_size, h_size = 350, 400
     img = Image.new('RGB', (w_size, h_size), (255,255,255,255))
     img.paste(img_logo,(0,0))
@@ -107,7 +107,7 @@ def text_image(logo, text1, text2, text3):
     angle = 270
     img = img.rotate(angle, expand=True)
     img.show()
-    img.save("tmp.png")
+    img.save("tmp.png") # input your absolute path => for auto running when boot up
     return 0
 
 if __name__ == '__main__':

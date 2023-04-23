@@ -1,0 +1,9 @@
+[Unit]
+Description= Auto starting PI and EPSON printer
+After=multi-user.target
+
+[Service]
+ExecStart=sudo python [your_absolute_path]/main.py -id_vendor 0x04b8 -id_product 0x0e27
+
+[Install]
+WantedBy=multi-user.target
