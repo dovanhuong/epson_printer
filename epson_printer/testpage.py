@@ -11,6 +11,14 @@ from PIL import ImageDraw
 import textwrap
 from time import ctime
 import requests
+import RPi.GPIO as GPIO
+
+
+led = 18
+switch = 31
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(led,GPIO.OUT)
+GPIO.setup(switch, GPIO.IN)
 
 
 def making_POST_request(url, data):
@@ -26,6 +34,10 @@ def making_POST_request(url, data):
     return 0
 
 def gpio_button_ctrl(pin1, pin2):
+    GPIO.setup(pin1, GPIO.IN)
+    GPIO.setup(pin2, GPIO.IN)
+    print("I'm working with GPIO signal, please following\n")
+
     if pin1:
         print("I will work after this pin activated")
     if pin2:
@@ -120,6 +132,11 @@ if __name__ == '__main__':
     if not options.id_vendor or not options.id_product:
         parser.print_help()
     else:
+        #GPIO
+        pin1 = 10
+        pin2 =11
+        gpio_button_ctrl(pin1, pin2)
+        # end of GPIO
         printer = EpsonPrinter(options.id_vendor, options.id_product)
         """Text printing"""
         #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
