@@ -154,6 +154,7 @@ if __name__ == '__main__':
         while True:
             pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
             if (pin1_status == 1 or pin2_status==1):
+                GPIO.cleanup()
                 pin1_status = 0
                 pin2_status = 0
                 print("You pressed the button\n")
