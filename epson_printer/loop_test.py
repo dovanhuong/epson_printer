@@ -172,7 +172,7 @@ if __name__ == '__main__':
             #     print("Please until my Printer ready!!!")
 
             #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
-            while (pin1_status == 1 or pin2_status==1):
+            for i in range(4):
                 # check driver is ready or not
                 print("checking driver")
                 dev = usb.core.find(idVendor= options.id_vendor, idProduct=options.id_product)

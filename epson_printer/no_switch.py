@@ -168,7 +168,7 @@ if __name__ == '__main__':
         # test = image_edit(text1, text2, text3, png=png)
         # test = image_edit(text1, text2, text3, png=png)
         os.system("sudo lp -o landscape tmp.png")
-        time.sleep(13)
+        time.sleep(1)
         printer.print_text("    =====>>> Have a nice day!    <<<=====\n\n\n")
         printer.linefeed()
         printer.cut()
