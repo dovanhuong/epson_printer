@@ -148,11 +148,14 @@ if __name__ == '__main__':
         #GPIO
         pin1 = 13
         pin2 = 15
-        pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
+        #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
         text2 = 100
+        
         while True:
+            pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
             while (pin1_status == 1 or pin2_status==1):
                 print("You pressed the button\n")
+                pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
                 # end of GPIO
                 printer = EpsonPrinter(options.id_vendor, options.id_product)
                 """Text printing"""
@@ -175,4 +178,6 @@ if __name__ == '__main__':
                 data = {"text1":text1,"text2": text2, "time":text3}
                 making_POST_request(url, data)
                 print("Complted post data in web service \n\n")
+                pin1_status = 0
+                pin2_status =0
         sys.exit(1)
