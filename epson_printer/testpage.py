@@ -34,6 +34,7 @@ def making_POST_request(url, data):
     return 0
 
 def gpio_button_ctrl(pin1, pin2):
+    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin1, GPIO.IN)
     GPIO.setup(pin2, GPIO.IN)
     print("I'm working with GPIO signal, please following\n")
