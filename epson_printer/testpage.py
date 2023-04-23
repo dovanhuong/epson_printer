@@ -63,6 +63,40 @@ def image_edit(text1, text2, text3,png):
     img.save("tmp.png")
     return 0
 
+def text_image(text1, text2, text3,png):
+    #img = Image.open(png)
+    font1 = ImageFont.truetype("../font/arial-unicode-ms.ttf",14)
+    font = ImageFont.truetype("../font/arial.ttf",70)
+    w_size,h_size  = img.size
+    #print(w, " ", h)
+    w_size, h_size = 350, 400
+    img = Image.new('RGB', (w_size, h_size), (0,0,0,0))
+    l1 = ImageDraw.Draw(img)
+    para = textwrap.wrap(text1, width=50)
+    current_h, pad = 120, 10
+    for line in para:
+        w, h = l1.textsize(line, font=font1)
+        l1.text(((w_size - w)/2,current_h), line, font=font1)
+        current_h += h + pad
+    
+    para = textwrap.wrap(text2, width=50)
+    current_h, pad = 170, 10
+    for line in para:
+        w, h = l1.textsize(line, font=font)
+        l1.text(((w_size - w)/2,current_h), line, font=font, stroke_width=4)
+        current_h += h + pad
+    print("see time: ",time.time())
+
+    #l1.text((50,120), text1, fill=0)
+    #l1.text((120,180), text2,font=font, fill=0, stroke_width=4 )
+    l1.text((138,300), text3, fill = 0)
+    angle = 270
+    img = img.rotate(angle, expand=True)
+    img.show()
+    img.save("tmp.png")
+    return 0
+
+
 if __name__ == '__main__':
     #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
     text1 = u"Đây là tên dịch vụ cần in theo khách hàng"
@@ -87,8 +121,9 @@ if __name__ == '__main__':
         text2 = "123456"
         text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
         png = "../format_pic.png"
-        test = image_edit(text1, text2, text3, png=png)
-        test = image_edit(text1, text2, text3, png=png)
+        test = text_image(text1, text2, text3, png=png)
+        # test = image_edit(text1, text2, text3, png=png)
+        # test = image_edit(text1, text2, text3, png=png)
         os.system("sudo lp -o landscape tmp.png")
         time.sleep(13)
         printer.print_text("    =====>>> Have a nice day!    <<<=====\n\n\n")
