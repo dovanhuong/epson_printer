@@ -163,13 +163,13 @@ if __name__ == '__main__':
             pin1_status = GPIO.input(pin1)
             pin2_status = GPIO.input(pin2)
             # check driver is ready or not
-            print("checking driver")
-            dev = usb.core.find(idVendor= options.id_vendor, idProduct=options.id_product)
-            if dev.is_kernel_driver_active(0):
-                reattach = True
-                dev.detach_kernel_driver(0)
-            else:
-                print("Please until my Printer ready!!!")
+            # print("checking driver")
+            # dev = usb.core.find(idVendor= options.id_vendor, idProduct=options.id_product)
+            # if dev.is_kernel_driver_active(0):
+            #     reattach = True
+            #     dev.detach_kernel_driver(0)
+            # else:
+            #     print("Please until my Printer ready!!!")
 
             #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
             while (pin1_status == 1 or pin2_status==1):
