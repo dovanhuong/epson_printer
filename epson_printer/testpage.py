@@ -153,13 +153,21 @@ if __name__ == '__main__':
         text2 = 100
         
         while True:
-            pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
+            GPIO.setmode(GPIO.BOARD)
+            GPIO.setup(pin1, GPIO.IN)
+            GPIO.setup(pin2, GPIO.IN)
+            print("status pin ",pin1, " ",  GPIO.input(pin1))
+            print("status pin ", pin2, " ", GPIO.input(pin2))
+            pin1_status = GPIO.input(pin1)
+            pin2_status = GPIO.input(pin2)
+
+            #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
             if (pin1_status == 1 or pin2_status==1):
                 GPIO.cleanup()
                 pin1_status = 0
                 pin2_status = 0
                 print("You pressed the button\n")
-                pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
+                #pin1_status, pin2_status = gpio_button_ctrl(pin1, pin2)
                 # end of GPIO
                 printer = EpsonPrinter(options.id_vendor, options.id_product)
                 """Text printing"""
