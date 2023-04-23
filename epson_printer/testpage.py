@@ -69,9 +69,9 @@ def text_image(logo, text1, text2, text3,png):
     logo = Image.open(logo)
     img_logo = logo.resize((350,86))
     #img = Image.open(png)
-    font1 = ImageFont.truetype("./epson_printer/font/arial-unicode-ms.ttf",16)
-    font2 = ImageFont.truetype("./epson_printer/font/arial.ttf",70)
-    font3 = ImageFont.truetype("./epson_printer/font/arial.ttf",15)
+    font1 = ImageFont.truetype("../font/arial-unicode-ms.ttf",17)
+    font2 = ImageFont.truetype("../font/arial.ttf",70)
+    font3 = ImageFont.truetype("../font/arial.ttf",15)
     #w_size,h_size  = img.size
     #print(w, " ", h)
     w_size, h_size = 350, 400
@@ -96,7 +96,7 @@ def text_image(logo, text1, text2, text3,png):
 
     #l1.text((50,120), text1, fill=0)
     #l1.text((120,180), text2,font=font, fill=0, stroke_width=4 )
-    l1.text((138,300), text3, fill = 0,font=font3, stroke_width=1)
+    l1.text((138,300), text3, fill = 0,font=font3)
     angle = 270
     img = img.rotate(angle, expand=True)
     img.show()
@@ -135,4 +135,8 @@ if __name__ == '__main__':
         printer.print_text("    =====>>> Have a nice day!    <<<=====\n\n\n")
         printer.linefeed()
         printer.cut()
+        # post data in web service
+        url = "https://jsonplaceholder.typicode.com/posts/"
+        data = {"id":[1,2,3], "userId":1}
+        making_POST_request(url, data)
         sys.exit(1)
