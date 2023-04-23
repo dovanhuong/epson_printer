@@ -10,6 +10,7 @@ from PIL import Image, ImageFont
 from PIL import ImageDraw
 import textwrap
 from time import ctime
+import requests
 
 
 def making_POST_request(url, data):
@@ -99,11 +100,11 @@ def text_image(text1, text2, text3,png):
 
 if __name__ == '__main__':
     #text1 = "This is address for center it can be long and longer than it is, I think it will be more"
-    text1 = u"Đây là tên dịch vụ cần in theo khách hàng"
-    text2 = "123456"
-    text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
-    png = "../format_pic.png"
-    test = image_edit(text1, text2, text3, png=png)
+    # text1 = u"Đây là tên dịch vụ cần in theo khách hàng"
+    # text2 = "123456"
+    # text3 = str(datetime.datetime.now().strftime('%H:%M:%S'))
+    # png = "../format_pic.png"
+    # test = image_edit(text1, text2, text3, png=png)
 
 
 
